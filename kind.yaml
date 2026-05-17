@@ -1,0 +1,23 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: switch-cni
+nodes:
+- role: control-plane
+  labels:
+    cni: cilium
+  extraMounts:
+  - hostPath: /var/run/docker.sock
+    containerPath: /var/run/docker.sock
+- role: worker
+  labels:
+    cni: cilium
+- role: worker
+  labels:
+    cni: calico
+- role: worker
+  labels:
+    cni: calico
+networking:
+  podSubnet: "10.244.0.0/16"
+  disableDefaultCNI: true
+

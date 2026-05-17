@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/GoogleContainerTools/skaffold/main/docs-v2/content/en/schemas/v4beta13.json
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: switch-cni
+build:
+  artifacts:
+    - image: ttl.sh/route-controller
+      context: route-controller
+      ko: {}
+manifests:
+  rawYaml:
+    - route-controller/deploy/deployment.yaml
+  kustomize:
+    paths:
+      - calico
+  helm:
+    releases:
+      - name: cilium
+        remoteChart: cilium
+        repo: https://helm.cilium.io 
+        valuesFiles:
+          - cilium/values.yaml

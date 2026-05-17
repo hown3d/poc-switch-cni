@@ -1,0 +1,18 @@
+ipam:
+  mode: kubernetes
+ipv4NativeRoutingCIDR: "10.244.0.0/16"
+nodeSelector:
+  "kubernetes.io/os": "linux"
+  "cni": "cilium"
+
+envoy:
+  nodeSelector:
+    "kubernetes.io/os": "linux"
+    "cni": "cilium"
+routingMode: native
+autoDirectNodeRoutes: true
+debug:
+  enabled: true
+# bpf:
+#   masquerade: true
+

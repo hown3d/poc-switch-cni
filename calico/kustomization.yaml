@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - https://raw.githubusercontent.com/projectcalico/calico/refs/tags/v3.32.0/manifests/calico.yaml
+
+
+patches:
+  - path: patch-calico-node.yaml
+    target:
+      group: apps
+      kind: DaemonSet
+      name: calico-node
+  - path: remove-ipam-upgrade-init.yaml
+    target:
+      group: apps
+      kind: DaemonSet
+      name: calico-node
+
+  - path: patch-ipam.yaml
+    target:
+      kind: ConfigMap
+      name: calico-config
+        

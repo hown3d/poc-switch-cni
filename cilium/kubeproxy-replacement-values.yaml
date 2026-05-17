@@ -1,0 +1,5 @@
+k8s:
+  apiServerURLs: >
+    https://switch-cni-control-plane:6443
+kubeProxyReplacement: true
+

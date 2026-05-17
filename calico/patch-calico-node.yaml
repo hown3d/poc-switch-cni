@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: not-important
+spec:
+  template:
+    spec:
+      nodeSelector:
+        cni: calico
+      containers:
+        - name: calico-node
+          env:
+          - name: CALICO_IPV4POOL_IPIP
+            value: Never
+          - name: USE_POD_CIDR
+            value: "true"
+          # disable calico ipool
+          - name: CALICO_IPV4POOL_CIDR
+            value: none
+          # - name: CALICO_IPV4POOL_NODE_SELECTOR
+          #   value: "cni == 'calico'"
