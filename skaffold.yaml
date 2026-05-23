@@ -2,15 +2,8 @@
 apiVersion: skaffold/v4beta13
 kind: Config
 metadata:
-  name: switch-cni
-build:
-  artifacts:
-    - image: ttl.sh/route-controller
-      context: route-controller
-      ko: {}
+  name: cnis
 manifests:
-  rawYaml:
-    - route-controller/deploy/deployment.yaml
   kustomize:
     paths:
       - calico
@@ -21,3 +14,27 @@ manifests:
         repo: https://helm.cilium.io 
         valuesFiles:
           - cilium/values.yaml
+profiles:
+  - name: bgp
+    manifests:
+      rawYaml:
+        - calico/bgp/cilium-peers.yaml
+        - cilium/bgp/clusterconfig.yaml
+        - cilium/bgp/advertisements.yaml
+    patches:
+      - op: add
+        path: /manifests/helm/releases/0/valuesFiles/-
+        value: cilium/bgp/values.yaml
+---
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: route-controller
+build:
+  artifacts:
+    - image: ttl.sh/route-controller
+      context: route-controller
+      ko: {}
+manifests:
+  rawYaml:
+    - route-controller/deploy/deployment.yaml

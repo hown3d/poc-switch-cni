@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumbgpclusterconfig_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumBGPClusterConfig
+metadata:
+  name: cilium-bgp
+spec:
+  nodeSelector: {}
+  bgpInstances:
+  - name: "calico"
+    localASN: 65000
+    localPort: 179
+    peers:
+    - name: "switch-cni-worker2"
+      # default calico asn
+      peerASN: 64512
+      peerAddress: 172.18.0.2
+      peerConfigRef:
+        name: calico
+    - name: "switch-cni-worker3"
+      peerASN: 64512
+      peerAddress: 172.18.0.3
+      peerConfigRef:
+        name: calico
+---
+apiVersion: cilium.io/v2
+kind: CiliumBGPPeerConfig
+metadata:
+  name: calico
+spec:
+  families:
+    - afi: ipv4
+      safi: unicast
+      advertisements:
+        matchLabels:
+          advertise: "bgp"

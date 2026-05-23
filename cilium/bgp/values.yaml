@@ -1,0 +1,2 @@
+bgpControlPlane:
+  enabled: true

@@ -22,3 +22,8 @@ patches:
       kind: ConfigMap
       name: calico-config
         
+  - path: patch-calico-kube-controller.yaml
+    target:
+      group: apps
+      kind: Deployment
+      name: calico-kube-controllers

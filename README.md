@@ -42,3 +42,22 @@ $ helm upgrade --install cilium cilium/cilium \
 # run kube-proxy only on calico nodes
 $ kubectl patch daemonsets.apps -n kube-system kube-proxy -p '{"spec":{"template":{"spec":{"nodeSelector":{"cni":"calico"}}}}}'
 ```
+
+## BGP
+
+Both calico and cilium provide the ability to distribute routes via BPG.
+While calico is running a full fledged bgp daemon with bird, cilium is using it's own BGP control plane built ontop of goBGP.
+
+To setup both CNIs with BGP, run `skaffold run -m cnis -p bgp`.
+This will enable the BGP control plane in cilium as well as applying the neccessary CRDs both from cilium and calico.
+Make sure that the peer IP addresseses are correct, as they are not deterministic.
+
+### Outcome
+
+Currently it is not possible to perform this sort of migration using BGP, since Cilium does unfortunately not import routes from other bgp daemons.
+
+- <https://github.com/cilium/cilium/pull/33035>
+- <https://github.com/cilium/cilium/blob/cd4777472adc07d6cb854fd6363cfbf91977db88/pkg/bgp/gobgp/server.go#L129-L148>
+- <https://github.com/cilium/cilium/issues/34296#issuecomment-2288046054>
+
+So while bird is able to accept the advertised addresses by Cilium for PodCIDRs, Cilium is not installing the routes from bird into it's datapath, not allowing pods on Cilium nodes to access pods on Calico nodes.

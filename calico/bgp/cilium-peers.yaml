@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/projectcalico.org/bgppeer_v3.json
+apiVersion: crd.projectcalico.org/v1
+kind: BGPPeer
+metadata:
+  name: cilium-switch-cni-worker1
+spec:
+  peerIP: 172.18.0.4
+  asNumber: 65000
+  filters:
+    - podcidr
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/projectcalico.org/bgppeer_v3.json
+apiVersion: crd.projectcalico.org/v1
+kind: BGPPeer
+metadata:
+  name: cilium-switch-cni-controlplane
+spec:
+  peerIP: 172.18.0.5
+  asNumber: 65000
+  filters:
+    - podcidr

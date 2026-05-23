@@ -1,0 +1,15 @@
+apiVersion: crd.projectcalico.org/v1
+kind: BGPFilter
+metadata:
+  name: podcidr
+spec:
+  exportV4:
+    - action: Accept
+      matchOperator: In
+      cidr: 10.244.0.0/16
+      source: RemotePeers
+  importV4:
+    - action: Accept
+      matchOperator: In
+      cidr: 10.244.0.0/16
+      source: RemotePeers
