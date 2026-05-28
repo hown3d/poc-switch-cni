@@ -25,6 +25,9 @@ profiles:
       - op: add
         path: /manifests/helm/releases/0/valuesFiles/-
         value: cilium/bgp/values.yaml
+deploy:
+  kubectl: {}
+  helm: {}
 ---
 apiVersion: skaffold/v4beta13
 kind: Config
